@@ -1,0 +1,24 @@
+.accounts {
+	background: red;
+	.text {
+		color:black;
+	}
+	
+} 
+.form-new-account {
+		.form-group {
+			&.valid {
+				.alert-danger {
+					display: none;
+				}
+			}
+			&.invalid {
+				.form-control {
+					border: solid 1px #CF4440;
+				}
+				.alert-danger {
+					display: block;
+				}
+			}
+		}
+	}

@@ -11,10 +11,13 @@ var gulp = require('gulp'),
     tsProject = tsc.createProject('tsconfig.json'),
     superstatic = require('superstatic'),
     connect = require('gulp-connect'),
+    less = require('gulp-less'),
+    path = require('path'),
     $ = require('gulp-load-plugins')({
         lazy: true
     }),
-    child_process = require('child_process');
+    child_process = require('child_process'),
+    concatCss = require('gulp-concat-css');
 
 
 var config = new Config();
@@ -46,8 +49,8 @@ gulp.task('serve-connect', function () {
     if (debug) {
         console.log('Running node-inspector. Browse to http://localhost:8080/debug?port=5858');
         exec = require('child_process').exec;
-        //        exec('node-inspector');
-        //        nodeOptions.nodeArgs = ['--debug=5858'];
+        exec('node-inspector');
+        nodeOptions.nodeArgs = ['--debug=5858'];
     }
 
     return $.nodemon(nodeOptions)
@@ -84,6 +87,41 @@ gulp.task('gen-ts-refs', function () {
     })).pipe(gulp.dest(config.typings));
 });
 
+gulp.task('less-clean',function(cb){
+    var typeScriptGenFiles = [
+        config.lessToCssOutput + '/css'];
+    // delete the files
+    del(typeScriptGenFiles, cb); 
+});
+gulp.task('less', function () {
+    return gulp.src(config.allLessFiles)
+        .pipe(less({
+            paths: [path.join(__dirname, 'less', 'includes')]
+        }))
+        .pipe(gulp.dest(config.lessToCssOutput));
+});
+gulp.task('css-combine', function () {
+  return gulp.src(config.lessToCssOutput + '/**/*.css')
+    .pipe(concatCss(config.bundleCssOutputFile))
+    .pipe(gulp.dest(config.bundleCssOutput));
+});
+/**
+ * Generates the app.d.ts references file dynamically from all application *.ts files.
+ */
+gulp.task('gen-css-debug', function () {
+    var target = gulp.src(config.cssDebugOutput);
+    var basepath = "/src/";
+    var sources = gulp.src([config.lessToCssOutput + '/**/*.css'], {
+        read: false
+    });
+    return target.pipe(inject(sources, {
+        starttag: '/*inject-start*/',
+        endtag: '/*inject-end*/',
+        transform: function (filepath) {
+            return '@import "' + filepath.replace(basepath,"../") + '";';
+        }
+    })).pipe(gulp.dest(config.cssBase));
+});
 /**
  * Lint all custom TypeScript files.
  */
@@ -96,7 +134,7 @@ gulp.task('ts-lint', function () {
  */
 gulp.task('compile-ts', function () {
     var sourceTsFiles = [config.allTypeScript, //path to typescript files
-                         config.libraryTypeScriptDefinitions]; //reference to library .d.ts files
+        config.libraryTypeScriptDefinitions]; //reference to library .d.ts files
 
 
     var tsResult = gulp.src(sourceTsFiles)
@@ -123,11 +161,15 @@ gulp.task('clean-ts', function (cb) {
 
 gulp.task('watch', function () {
     gulp.watch([config.allTypeScript], ['ts-lint', 'compile-ts']);
+    gulp.watch([config.allLessFiles],['css-all']);
 });
 
-gulp.task('serve', ['gen-ts-refs', 'compile-ts', 'serve-connect', 'watch'], function () {
+gulp.task('serve', ['gen-ts-refs','compile-ts','css-all', 'serve-connect', 'watch'], function () {
     //    process.stdout.write('Starting webserver...\n');
 
 });
+gulp.task('css-all', ['less-clean','less','gen-css-debug','css-combine'], function () {
+    //    process.stdout.write('Starting webserver...\n');
 
-gulp.task('default', ['gen-ts-refs', 'ts-lint', 'compile-ts']);
+});
+gulp.task('default', ['css-all','gen-ts-refs', 'ts-lint', 'compile-ts']);

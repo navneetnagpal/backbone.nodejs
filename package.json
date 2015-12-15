@@ -10,21 +10,24 @@
     "body-parser": "^1.14.1",
     "express": "^4.13.3",
     "lodash": "^3.10.0",
-    "cors": "~2.7.1"
+    "cors": "~2.7.1",
+    "backbone": "~1.2.3"
   },
   "devDependencies": {
+    "del": "~2.1.0",
     "gulp": "^3.8.11",
+    "gulp-concat-css": "^2.2.0",
+    "gulp-connect": "~2.2.0",
     "gulp-debug": "^2.0.1",
     "gulp-inject": "^1.2.0",
+    "gulp-less": "^3.0.5",
+    "gulp-load-plugins": "~1.1.0",
+    "gulp-nodemon": "~2.0.4",
+    "gulp-rimraf": "^0.1.1",
     "gulp-sourcemaps": "^1.5.1",
     "gulp-tslint": "^1.4.4",
     "gulp-typescript": "^2.5.0",
-    "gulp-rimraf": "^0.1.1",
-    "del": "~2.1.0",
-    "superstatic": "~3.0.0",
-    "gulp-connect": "~2.2.0",
-    "gulp-load-plugins": "~1.1.0",
-    "gulp-nodemon": "~2.0.4"
+    "superstatic": "~3.0.0"
   },
   "author": "",
   "license": "BSD-2-Clause"

@@ -6,6 +6,8 @@ require.config({
          bootstrap: 'js/vendor/bootstrap.min',
         underscore: 'js/vendor/underscore',
         backbone: 'js/vendor/backbone',
+        'backbone.localstorage':'js/vendor/backbone.localStorage',
+        'backbone.radio':'js/vendor/backbone.radio',
         marionette: 'js/vendor/backbone.marionette',
         app: 'js/app'
     },
@@ -28,7 +30,7 @@ require.config({
             exports: 'Marionette'
         },
         app: {
-            deps: ['bootstrap','marionette'],
+            deps: ['bootstrap','marionette','backbone.localstorage','backbone.radio'],
             exports: 'App'
         }
     }

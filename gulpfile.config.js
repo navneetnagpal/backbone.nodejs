@@ -7,6 +7,12 @@ var GulpConfig = (function () {
         this.nodeServer= this.server + 'server.js';
         this.sourceApp = this.source + 'lib/';
 
+        this.allLessFiles = this.source + 'assets/**/*.less';
+        this.lessToCssOutput = this.source + 'dist/css';
+        this.bundleCssOutput = this.source + 'assets';
+        this.bundleCssOutputFile = 'bundle.css';
+        this.cssDebugOutput = this.source + 'assets/bundle-debug.css';
+        this.cssBase = this.source + 'assets/';
         this.tsOutputPath = this.source + '/js/bin';
         this.allJavaScript = [this.source + '/js/**/*.js'];
         this.allTypeScript = this.sourceApp + '/**/*.ts';

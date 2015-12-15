@@ -1,0 +1,18 @@
+.accounts {
+  background: red;
+}
+
+.accounts .text {
+  color: black;
+}
+
+.form-new-account .form-group.valid .alert-danger {
+  display: none;
+}
+
+.form-new-account .form-group.invalid .alert-danger {
+  display: block;
+}
+.colors-comp .text {
+  background: #e2e2e2;
+}

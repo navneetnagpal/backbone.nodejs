@@ -2,54 +2,109 @@
 
 
 <head>
-    <title>Backbone.js Test Project</title>
-    <link rel="stylesheet" href="assets/css/bootstrap.css" />
-    <link rel="stylesheet" href="assets/css/bootstrap-theme.css" />
-    <link rel="stylesheet" href="assets/css/custom.css" />
-   
-    <script id="layout-template" type="text/template">
-
-        <nav id="menu" class="navbar navbar-inverse">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Sample</a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    
-                </ul>
-            </div>
-        </nav>
-        <article id="content">Content...</article>
-
-    </script>
+	<title>Backbone.js Test Project</title>
+	<link rel="stylesheet" href="assets/css/bootstrap.css" />
+	<link rel="stylesheet" href="assets/css/bootstrap-theme.css" />
+	<link rel="stylesheet" href="assets/css/custom.css" />
+	<link rel="stylesheet" href="assets/bundle-debug.css" />
 </head>
-<!-- 
-<li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">Away</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Feature <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">One more separated link</a></li>
-                        </ul>
-                    </li>
--->
-<body>
-    <div id="main-app" class="container">
 
-    </div>
-    <script src="js/vendor/requirejs.js" data-main="js/main.js?_v=17"></script>
+<body>
+<div class="container-fluid">
+	<section id="main-app">
+		<div class="row">
+			<header id="header" class="col-md-3 col-xs-12"></header>
+		<!--</div>
+		<div class="row">-->
+			<section id="content" class="col-md-9 col-xs-12"></section>
+		</div>
+		<div class="row">
+			<footer id="footer" class="col-md-12"></footer>
+		</div>
+	</section>
+	</div>
+	
+	<script type="text/html" id="template-header">
+		<h1>New Account</h1>
+		<form class="form form-new-account">
+			<div class="form-group valid">
+				<label class="sr-only" for="accNo">Email address</label>
+				<input type="text" class="form-control" id="txt-accno" placeholder="Account No">
+				<div class="alert alert-danger" role="alert"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Error:</span> Enter account number </div>
+			</div>
+			<div class="form-group valid">
+				<label class="sr-only" for="name">Password</label>
+				<input type="text" class="form-control" id="txt-name" placeholder="Name">
+				<div class="alert alert-danger" role="alert"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Error:</span> Enter name </div>
+			</div>
+			<div class="form-group valid">
+				<label class="sr-only" for="name">Password</label>
+				<input type="number" class="form-control" id="txt-cash" placeholder="Cash">
+				<div class="alert alert-danger" role="alert"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Error:</span> Enter cash </div>
+			</div>
+			<div class="checkbox">
+				<label>
+				<input type="radio" name="type" checked id="chk-savings"> Savings
+				</label>
+				<label>
+				<input type="radio" name="type"  id="current"> Current
+				</label>
+			</div>
+			<button type="button" id="btn-save" class="btn btn-primary">Add New</button>
+			<button type="button" id="btn-reset" class="btn btn-danger">Reset</button>
+			</form>
+	</script>
+
+	<script type="text/html" id="template-footer">
+		  
+		<ul class="list-group">
+  <li class="list-group-item alert-success">
+    <span class="badge"><%= savingsCount %></span>
+   <%= activeCountLabel() %>
+  </li>
+    <li class="list-group-item alert-info">
+    <span class="badge"><%= savingsCount %></span>
+   Saving Accounts
+  </li>
+    <li class="list-group-item alert-warning">
+    <span class="badge"><%= othersCount %></span>
+   Current Accounts
+  </li>
+</ul>
+ 
+	</script>
+
+	<script type="text/html" id="template-accountsItemView">
+	<td> <input type="checkbox" class="toggle" <% if (closed) { %>checked<% } %>/> </td>
+	<td><%- name %> </td>
+	<td> <%- cash %></td>
+	<td> <span class="glyphicon glyphicon-tags"></span><span><%- acType %></span> </td>
+	
+		 
+	</script>
+	
+	
+	<script type="text/html" id="template-accountsListCompositeView">
+
+		<h1>All Accounts</h1>		<input id="toggle-all" type="checkbox">
+		<label for="toggle-all">Close All Accounts</label>
+		<table  class="table table-striped">
+ 			<thead>
+				 <tr>
+					 <th>Close</th>
+					 <th>Name</th>
+					 <th>Cash</th>
+					 <th>Account Type</th>
+				 </tr>
+ 			</thead>
+			 <tbody id="accounts-list">
+			 </tbody>
+		</table>
+		 
+	</script>
+	
+	
+	<script src="js/vendor/requirejs.js" data-main="js/main.js?_v=17"></script>
 </body>
 
 </html>
