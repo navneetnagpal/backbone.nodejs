@@ -19,10 +19,10 @@ api.use(bodyParser.urlencoded({extended: true}));
 api.use(bodyParser.json());
 
 // Serve static content from the public directory
-api.use('/', express.static(__dirname + '/../../src'));
+api.use('/', express.static(__dirname + '../../../../src'));
 
-//// Add API routes
-// require('./accounts').addRoutes(api);
-// require('./test').addRoutes(api);
+// Add API routes
+require('./account.adapter').addRoutes(api);
+require('./test.adapter').addRoutes(api);
 
 module.exports = api;

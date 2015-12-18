@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp'),
+    args = require('yargs').argv,
     debug = require('gulp-debug'),
     inject = require('gulp-inject'),
     tsc = require('gulp-typescript'),
@@ -12,7 +13,8 @@ var gulp = require('gulp'),
     superstatic = require('superstatic'),
     connect = require('gulp-connect'),
     less = require('gulp-less'),
-    path = require('path'),
+    path = require('path'),    
+    mocha = require('gulp-mocha'),
     $ = require('gulp-load-plugins')({
         lazy: true
     }),
@@ -36,36 +38,37 @@ gulp.task('static-connect', function () {
  * --debug-brk or --debug
  */
 gulp.task('serve-connect', function () {
+   var debug = args.debug || args.debugBrk;
     var exec;
     var nodeOptions = {
         script: config.nodeServer,
         delayTime: 1,
         env: {
-            'PORT': config.port || '8080'
+            'PORT': config.port
         },
         watch: [config.server]
     };
 
     if (debug) {
-        console.log('Running node-inspector. Browse to http://localhost:8080/debug?port=5858');
+        log('Running node-inspector. Browse to http://localhost:8080/debug?port=5858');
         exec = require('child_process').exec;
         exec('node-inspector');
         nodeOptions.nodeArgs = ['--debug=5858'];
     }
 
     return $.nodemon(nodeOptions)
-        .on('restart', function (ev) {
-            console.log('*** nodemon restarted');
-            console.log('files changed:\n' + ev);
+        .on('restart', ['vet'], function(ev) {
+            log('*** nodemon restarted');
+            log('files changed:\n' + ev);
         })
-        .on('start', function () {
-            console.log('*** nodemon started');
+        .on('start', function() {
+            log('*** nodemon started');
         })
-        .on('crash', function () {
-            console.log('*** nodemon crashed: script crashed for some reason');
+        .on('crash', function() {
+            log('*** nodemon crashed: script crashed for some reason');
         })
-        .on('exit', function () {
-            console.log('*** nodemon exited cleanly');
+        .on('exit', function() {
+            log('*** nodemon exited cleanly');
         });
 });
 
@@ -129,6 +132,11 @@ gulp.task('ts-lint', function () {
     return gulp.src(config.allTypeScript).pipe(tslint()).pipe(tslint.report('prose'));
 });
 
+gulp.task('mocha', function() {
+    return gulp.src('test/test.js', {read: false})
+        // gulp-mocha needs filepaths so you can't have any plugins before it
+        .pipe(mocha({}));
+});
 /**
  * Compile TypeScript and include references to library and app .d.ts files.
  */
@@ -173,3 +181,19 @@ gulp.task('css-all', ['less-clean','less','gen-css-debug','css-combine'], functi
 
 });
 gulp.task('default', ['css-all','gen-ts-refs', 'ts-lint', 'compile-ts']);
+/**
+ * Log a message or series of messages using chalk's blue color.
+ * Can pass in a string, object or array.
+ */
+function log(msg) {
+    if (typeof msg === 'object') {
+        for (var item in msg) {
+            if (msg.hasOwnProperty(item)) {
+                $.util.log($.util.colors.blue(msg[item]));
+            }
+        }
+    }
+    else {
+        $.util.log($.util.colors.blue(msg));
+    }
+}

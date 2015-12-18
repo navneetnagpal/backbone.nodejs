@@ -32,13 +32,13 @@ function dropData(req, res) {
 function saveData(req, res) {     
       var model = collection.get(req.body.id);
       model.set(req.body);
-      res.json({success:true});
+      res.json(model.toJSON());
 }
 function createData(req, res) {     
       var accountData=req.body;
       accountData.id=collection.length+1;
       collection.add([accountData]);
-      res.json({success:true});
+      res.json(accountData);
 }
 function dropDataById(req, res) {     
      var model = collection.get(req.params.id);

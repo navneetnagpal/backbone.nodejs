@@ -1,8 +1,25 @@
 'use strict';
 var GulpConfig = (function () {
     function gulpConfig() {
-        this.source = './src/';
+        
+        this.root =  './';
         this.server = './server/';
+        this.test   = './test/';
+        
+        this.alljs= [
+            this.root + '*.js',
+            this.server + '**/*.js',
+            this.test + '**/*.js'
+        ];
+        this.testDependencies= [
+            this.server + '**/*',
+            this.test + '**/*'
+        ];
+        this.features= this.test + 'features/';
+        this.steps= this.test + 'steps/';
+        
+        this.source = './src/';
+      
         this.port = '8080';
         this.nodeServer= this.server + 'server.js';
         this.sourceApp = this.source + 'lib/';

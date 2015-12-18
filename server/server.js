@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------
 var port = process.env.PORT || 8080;
 
-var api = require('./rest/api');
+var api = require('./adapter/rest/api');
 var server = require('http').createServer(api);
 
 // Start listening to HTTP requests

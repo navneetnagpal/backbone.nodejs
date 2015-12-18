@@ -46,6 +46,7 @@ define(["require", "exports", "marionette"], function (require, exports, Marione
 		},
 		validate:function(){
 			var valid=true;
+			this.clearAll();
 			if (this.ui.txtaccNo.val().trim()===""){
 				this.markInvalid(this.ui.txtaccNo);
 				valid=false;
@@ -57,10 +58,8 @@ define(["require", "exports", "marionette"], function (require, exports, Marione
 			if (this.ui.txtcash.val().trim()===""){
 				this.markInvalid(this.ui.txtcash);
 				valid=false;
-			}
-			if (!valid){ return false; }
-			this.clearAll();
-			return true;
+			}			
+			return valid;
 		},
 		// According to the spec
 		// If escape is pressed during the edit, the edit state should be left and any changes be discarded.

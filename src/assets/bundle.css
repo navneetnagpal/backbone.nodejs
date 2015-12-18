@@ -10,6 +10,10 @@
   display: none;
 }
 
+.form-new-account .form-group.invalid .form-control {
+  border: solid 1px #CF4440;
+}
+
 .form-new-account .form-group.invalid .alert-danger {
   display: block;
 }
