@@ -1,18 +1,20 @@
 'use strict';
 
 module.exports = {
-    addRoutes: addRoutes
+    getRoutes: getRoutes
 };
-
+var express = require('express');
+var router = express.Router();
 /**
  * Adds routes to the api.
  */
-function addRoutes(api) {
-    api.post('/accounts', createAccount);
-    api.put('/accounts/:id', updateAccount);
-    api.get('/accounts/:id', getAccount);
-    api.get('/accounts', getAccounts);
-    api.delete('/accounts/:id', deleteAccount);
+function getRoutes() {
+    router.post('/', createAccount);
+    router.put('/:id', updateAccount);
+    router.get('/:id', getAccount);
+    router.get('/', getAccounts);
+    router.delete('/:id', deleteAccount);
+    return router;
 }
 
 var infrastructure = require('../../infrastructure');

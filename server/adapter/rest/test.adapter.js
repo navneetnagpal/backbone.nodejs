@@ -1,19 +1,20 @@
 'use strict';
 
 module.exports = {
-    addRoutes: addRoutes
+    getRoutes: getRoutes
 };
-
+var express = require('express');
+var router = express.Router();
 /**
  * Adds routes to the api.
  */
-function addRoutes(api) {
-    console.log('i');
-    api.get('/tests', dropData);
-    api.delete('/tests/:id', dropData);
+function getRoutes() { 
+    router.get('/', dropData);
+    router.delete('/:id', dropData);
+    return router;
 }
 
-var testService = require('../../application').testService;
+var testService = require('../../application').testService; 
 
 /**
  * Deletes all data if the id matches.

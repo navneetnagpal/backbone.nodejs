@@ -57,7 +57,7 @@ gulp.task('serve-connect', function () {
     }
 
     return $.nodemon(nodeOptions)
-        .on('restart', ['vet'], function(ev) {
+        .on('restart', function(ev) {
             log('*** nodemon restarted');
             log('files changed:\n' + ev);
         })

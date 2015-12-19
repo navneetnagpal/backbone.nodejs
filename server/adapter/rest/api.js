@@ -21,8 +21,11 @@ api.use(bodyParser.json());
 // Serve static content from the public directory
 api.use('/', express.static(__dirname + '../../../../src'));
 
-// Add API routes
-require('./account.adapter').addRoutes(api);
-require('./test.adapter').addRoutes(api);
+// Add API routes 
+api.use('/accounts', require('./account.adapter').getRoutes());
+api.use('/tests', require('./test.adapter').getRoutes());
+api.use('/people', require('./people.adapter').getRoutes());
+api.use('/projects', require('./project.adapter').getRoutes());
+api.use('/assignments', require('./assignment.adapter').getSearchRoutes());
 
 module.exports = api;

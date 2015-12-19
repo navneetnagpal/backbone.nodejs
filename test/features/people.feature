@@ -1,31 +1,77 @@
 @libraries=people, error
-Feature: Peoples
-In order to manage my people,
-as a Hiring Manager,
-I want the ability to create, update and delete peoples.
+Feature: People
+As a recruiter
+I want the ability to create, update and delete people
+So that staffing owners can assign people to projects
 
-Scenario: People Creation
-    When I create an people called Josh
+Scenario: People can be created
+    When I create the following person
+        -------------------------------------------------------
+        | username | firstName | lastName | metro | title     |
+        | edana    | Evan      | Dana     | BOS   | srasl2.id |
+        -------------------------------------------------------
 
-    And I ask for the people
+    And I ask for the person edana
 
-    Then I should get the people called Josh
+    Then I should get the following person
+        -------------------------------------------------------
+        | username | firstName | lastName | metro | title     |
+        | edana    | Evan      | Dana     | BOS   | srasl2.id |
+        -------------------------------------------------------
 
-Scenario: Account Update
-    Given an account called BofA Checking
+Scenario: People can be updated
+    Given the following person
+        -------------------------------------------------------
+        | username | firstName | lastName | metro | title     |
+        | edana    | Evan      | Dana     | BOS   | srasl2.id |
+        -------------------------------------------------------
 
-    When I change the account name to Bank of America Checking
+    When I change the person edana as follows
+        -------------------------------------------------------
+        | username | firstName | lastName | metro | title     |
+        | edana    | Evan      | Dana     | NYC   | mgr.id    |
+        -------------------------------------------------------
 
-    And I ask for the account
+    And I ask for the person edana
 
-    Then I should get the account called Bank of America Checking
+    Then I should get the following person
+        -------------------------------------------------------
+        | username | firstName | lastName | metro | title     |
+        | edana    | Evan      | Dana     | NYC   | mgr.id    |
+        -------------------------------------------------------
+        
+Scenario: People can be released from company
+     Given the following person
+        -------------------------------------------------------
+        | username | firstName  | lastName   | metro     | title     |
+        | wayne    | Wayne      | Bruce     | NYC       | batman    |
+        -------------------------------------------------------
 
+    When I release the person wayne 
+    And I ask for the person wayne
+    Then I should get the following message
+        -------------------------------------
+        | message                            |
+        | Wayne, Bruce left the company      |
+        -------------------------------------
+Scenario: People cann't be created with duplicate username
+     Given the following person
+        -------------------------------------------------------
+        | username | firstName  | lastName   | metro     | title     |
+        | wayne    | Wayne      | Bruce      | NYC       | batman    |
+        -------------------------------------------------------
 
-Scenario: Account Deletion
-    Given an account called BofA Checking
-
-    When I delete the account
-
-    And I ask for the account
-
+    When I create the following person
+        -------------------------------------------------------
+        | username | firstName | lastName | metro | title     |
+        | wayne    | Evan      | Dana     | BOS   | srasl2.id |
+        -------------------------------------------------------
+    Then I should get the following message
+        -------------------------------------------------------------------------
+        | message                                                               |
+        | 'wayne' as username already exists please use another username        |
+        -------------------------------------------------------------------------
+Scenario: Person existance in syste
+    When I ask for the person oliver
+ 
     Then a 404 Not Found error should be returned

@@ -17,16 +17,16 @@ var errors = require('../../infrastructure').errors;
 var accounts = [];
 var nextAccountId = 1;
 
+
 /**
  * Creates a new account and inserts it in to the database.
  * @param {Object} accountData minus the id
  * @return {Promise} A promise that returns the inserted account (including the id)
  */
-function createAccount(accountData) {
-    var account = new Account(accountData);
-    account.id = nextAccountId++;
-    accounts.push(account);
-    return Promise.resolve(account);
+function createAccount(accountData) {    
+    accountData.id = nextAccountId++;
+    accounts.push(accountData);
+    return Promise.resolve(accountData);
 }
 
 /**

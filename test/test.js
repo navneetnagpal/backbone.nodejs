@@ -25,13 +25,11 @@ new Yadda.FeatureFileSearch('./test/features').each(function(file) {
     });
 });
 
-function require_feature_libraries(feature) {
-    // console.log('feature=>'+feature);
+function require_feature_libraries(feature) { 
     return feature.annotations.libraries.split(', ').reduce(require_library, []);
 }
 
-function require_library(libraries, library) {
-    // console.log('lib=>'+library);
+function require_library(libraries, library) { 
     return libraries.concat(require('./steps/' + library + '.steps'));
 }
 

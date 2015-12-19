@@ -11,7 +11,6 @@ new Yadda.FeatureFileSearch('./features').each(function(file) {
         var yadda = Yadda.createInstance(libraries);
 
         scenarios(feature.scenarios, function(scenario) {
-            console.log(feature.scenarios);
             // Drop the data before every scenario
             before(dropData);
 
