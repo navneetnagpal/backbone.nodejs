@@ -54,7 +54,7 @@ Scenario: People can be released from company
         | message                            |
         | Wayne, Bruce left the company      |
         -------------------------------------
-Scenario: People cann't be created with duplicate username
+Scenario: People can't be created with duplicate username
      Given the following person
         -------------------------------------------------------
         | username | firstName  | lastName   | metro     | title     |
