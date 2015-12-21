@@ -12,7 +12,8 @@ var Promise = require('bluebird');
 var _ = require('lodash');
 
 var dictionary = new Dictionary()
-    .define('table', /([^\u0000]*)/, Yadda.converters.table);
+    .define('table', /([^\u0000]*)/, Yadda.converters.table)
+     .define('list', /([^\u0000]*)/, Yadda.converters.list);
 
 module.exports = English.library(dictionary)
     .when('staffing owner $staffer asks for her assignments starting between $start and $end', function (staffer, start, end, next) {
@@ -31,13 +32,13 @@ module.exports = English.library(dictionary)
                 next();
             });
     })
-    .then('the following people should be shown\n$table', function (table, next) {
+    .then('the following people should be shown\n$list', function (list, next) {
         expect(this.ctx.error).to.be.undefined;
-        expect(this.ctx.candidates).to.exist;
-        expect(this.ctx.candidates.length).to.equal(table.length);
-        for (var i = 0; i < table.length; i++) {
-            var dataToVerify = _.filter(this.ctx.candidates, 'username', table[i].username);
-            expect(table[i].username).to.equal(dataToVerify[0].username);
+        expect(this.ctx.candidates).to.exist; 
+        expect(list.length).to.equal(this.ctx.candidates.length);
+        for (var i = 0; i < list.length; i++) {
+            var dataToVerify = _.filter(this.ctx.candidates, 'username', list[i]);
+            expect(list[i]).to.equal(dataToVerify[0].username);
         } 
         next();
     })

@@ -7,14 +7,15 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "body-parser": "^1.14.1",
-    "express": "^4.13.3",
-    "lodash": "^3.10.0",
-    "cors": "~2.7.1",
     "backbone": "~1.2.3",
     "bluebird": "^2.10.2",
+    "body-parser": "^1.14.1",
     "bunyan": "^1.5.1",
+    "cors": "~2.7.1",
     "create-error": "^0.3.1",
+    "express": "^4.13.3",
+    "lodash": "^3.10.0",
+    "moment": "^2.10.6",
     "pg": "^4.4.3",
     "pg-parse-float": "0.0.1"
   },

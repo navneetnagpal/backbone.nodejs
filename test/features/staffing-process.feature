@@ -49,8 +49,7 @@ Scenario: Staffing owners can match people to assignments
 
     Then the following people should be shown
         -------
-        |username   |
-        |edana      |
-        |dthomas    |
-        |skumar     |
+        edana
+        dthomas
+        skumar
         -------
